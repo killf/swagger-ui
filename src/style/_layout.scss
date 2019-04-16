@@ -815,3 +815,22 @@ a.nostyle {
     }
   }
 }
+
+.w0{
+    width: 0%;
+    display: none;
+}
+
+.w50{
+    width: 50%;
+    display: block;
+}
+
+.w100{
+    width: 100%;
+    display: block;
+}
+
+.flex{
+    display: flex;
+}

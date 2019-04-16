@@ -1,0 +1,578 @@
+{
+	"swagger": "2.0",
+	"tags": [{
+		"name": "Channels",
+		"description": "通道管理"
+	}, {
+		"name": "States",
+		"description": "系统状态"
+	}, {
+		"name": "Stat",
+		"description": "分组信息"
+	}, {
+		"name": "DrawAttr",
+		"description": "编码属性"
+	}],
+	"paths": {
+		"/channels": {
+			"get": {
+				"tags": ["Channels"],
+				"summary": "",
+				"description": "",
+				"operationId": "get_channels",
+				"consumes": [],
+				"produces": ["application/json"],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Return the channels list.",
+						"example": [{
+							"calculate_Queue": 0,
+							"channel": "chanid_abcd",
+							"discardFrame": 0,
+							"enable_face": true,
+							"enable_pvc": false,
+							"encode_Queue": 0,
+							"face_Queue": 0,
+							"face_active_targets": 0,
+							"face_ids": 0,
+							"faceCount": 0,
+							"frame_decoder": 10,
+							"frame_accepted": 0,
+							"frames_dropped_by_congrestion_control": 0,
+							"frames_dropped_by_network": 0,
+							"status": 0,
+							"vehicleCount": 0,
+							"vehicle_detected": 0
+						}]
+					}
+				}
+			}
+		},
+		"/channels/{uuid}": {
+			"post": {
+				"tags": ["Channels"],
+				"summary": "add channel",
+				"description": "add a channel to capture service",
+				"operationId": "post_channels",
+				"consumes": ["application/json"],
+				"produces": ["application/json"],
+				"parameters": [{
+					"name": "uuid",
+					"in": "path",
+					"description": "ID of the channel",
+					"required": true,
+					"type": "string"
+				}, {
+					"in": "body",
+					"name": "body",
+					"description": "channel parameters.",
+					"required": true,
+					"example": {
+						"task_id": "task_id_abc",
+						"connection_url": "rtsp://admin:agv10086@192.168.3.14",
+						"video_type": "rtsp",
+						"channel_no": "1",
+						"realtime": true,
+						"device": 0,
+						"enable_track": true,
+						"enable_multi_recog": true,
+						"regions": [{
+							"exclusive": false,
+							"vertices": [{
+								"x": 1,
+								"y": 1
+							}]
+						}],
+						"face": {
+							"enable": false,
+							"min_face_width": 50,
+							"min_img_quality": 90,
+							"min_cap_distance": 5,
+							"min_confidence": 0.60,
+							"channel_threshold": 0.56,
+							"cap_stat": 0,
+							"zoom": 960,
+							"max_face_count": 10,
+							"face_merge": false,
+							"merge_all": true,
+							"merge_threshold": 0.66,
+							"merge_time_out": 6,
+							"max_yaw": 60,
+							"max_pitch": 60,
+							"max_roll": 60
+						},
+						"vehicle": {
+							"enable": false,
+							"enable_plate": false,
+							"enable_color": true,
+							"enable_type": false,
+							"enable_brand": true,
+							"enable_marker": false,
+							"enable_feature": true
+						},
+						"person": {
+							"enable": false,
+							"enable_attri": false,
+							"enable_feature": true
+						},
+						"nonmotor": {
+							"enable": false,
+							"enable_attri": false,
+							"enable_feature": true
+						}
+					}
+				}],
+				"responses": {
+					"200": {
+						"description": "Return operation result.",
+						"example": {
+							"code": 0,
+							"errmsg": "OK"
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["Channels"],
+				"summary": "",
+				"description": "",
+				"operationId": "put_channels",
+				"consumes": ["application/json"],
+				"produces": ["application/json"],
+				"parameters": [{
+					"name": "uuid",
+					"in": "path",
+					"description": "ID of channel to return",
+					"required": true,
+					"type": "string"
+				}, {
+					"in": "body",
+					"name": "body",
+					"description": "update a channel.",
+					"required": true,
+					"example": {
+						"in": "body",
+						"name": "body",
+						"description": "update a channel's parameters.",
+						"required": true,
+						"example": {
+							"task_id": "task_id_abc",
+							"video_type": "rtsp",
+							"device": 0,
+							"enable_track": true,
+							"enable_multi_recog": true,
+							"regions": [{
+								"exclusive": false,
+								"vertices": [{
+									"x": 1,
+									"y": 1
+								}]
+							}],
+							"face": {
+								"enable": false,
+								"min_face_width": 50,
+								"min_img_quality": 90,
+								"min_cap_distance": 5,
+								"min_confidence": 0.60,
+								"channel_threshold": 0.56,
+								"cap_stat": 0,
+								"zoom": 960,
+								"max_face_count": 10,
+								"face_merge": false,
+								"merge_all": true,
+								"merge_threshold": 0.66,
+								"merge_time_out": 6,
+								"max_yaw": 60,
+								"max_pitch": 60,
+								"max_roll": 60
+							},
+							"vehicle": {
+								"enable": false,
+								"enable_plate": false,
+								"enable_color": true,
+								"enable_type": false,
+								"enable_brand": true,
+								"enable_marker": false,
+								"enable_feature": true
+							},
+							"person": {
+								"enable": false,
+								"enable_attri": false,
+								"enable_feature": true
+							},
+							"nonmotor": {
+								"enable": false,
+								"enable_attri": false,
+								"enable_feature": true
+							}
+						}
+					}
+				}],
+				"responses": {
+					"200": {
+						"code": 0,
+						"errmsg": "修改通道成功！"
+					},
+					"404": null
+				}
+			},
+			"get": {
+				"tags": ["Channels"],
+				"summary": "",
+				"description": "",
+				"operationId": "get_channels_2",
+				"consumes": [],
+				"produces": ["application/json"],
+				"parameters": [{
+					"name": "uuid",
+					"in": "path",
+					"description": "ID of the channel",
+					"required": true,
+					"type": "string"
+				}],
+				"responses": {
+					"200": {
+						"description": "Return the channels list.",
+						"example": [{
+							"calculate_Queue": 0,
+							"channel": "chanid_abcd",
+							"discardFrame": 0,
+							"enable_face": true,
+							"enable_pvc": false,
+							"encode_Queue": 0,
+							"face_Queue": 0,
+							"face_active_targets": 0,
+							"face_ids": 0,
+							"faceCount": 0,
+							"frame_decoder": 10,
+							"frame_accepted": 0,
+							"frames_dropped_by_congrestion_control": 0,
+							"frames_dropped_by_network": 0,
+							"status": 0,
+							"vehicleCount": 0,
+							"vehicle_detected": 0
+						}]
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Channels"],
+				"summary": "",
+				"description": "",
+				"operationId": "delete_channels",
+				"consumes": [],
+				"produces": ["application/json"],
+				"parameters": [{
+					"name": "uuid",
+					"in": "path",
+					"description": "ID of channel to return",
+					"required": true,
+					"type": "string"
+				}, {
+					"name": "uuid",
+					"in": "path",
+					"description": "ID of the channel",
+					"required": true,
+					"type": "string"
+				}],
+				"responses": {
+					"200": {
+						"code": 0,
+						"errmsg": "删除通道成功！"
+					},
+					"404": null
+				}
+			}
+		},
+		"/states/": {
+			"get": {
+				"tags": [
+					"States"
+				],
+				"summary": "",
+				"description": "",
+				"operationId": "get_states",
+				"consumes": [],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "返回cpu使用率、内存使用情况",
+						"example": {
+							"cpu": 1,
+							"mem": {
+								"total": 131741944,
+								"usage": 50
+							}
+						}
+					}
+				}
+			}
+		},
+		"/stat/": {
+			"get": {
+				"tags": [
+					"Stat"
+				],
+				"summary": "",
+				"description": "查询分组信息",
+				"operationId": "get_stat_0",
+				"consumes": [],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "如果分组不存在，返回HTTP 404状态码，消息体可以为空。如果通道存在，则按照下面的JSON格式返回操作的结果.",
+						"example": {
+							"face_result": 0,
+							"pvc_result": 1,
+							"stat": {
+								"frame_count": 0,
+								"uuid": [
+									"chanid_1234",
+									"chanid_3456"
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		"/stat/{group_id}": {
+			"get": {
+				"tags": [
+					"Stat"
+				],
+				"summary": "",
+				"description": "查询分组信息",
+				"operationId": "get_stat",
+				"consumes": [],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [{
+					"name": "group_id",
+					"in": "path",
+					"description": "ID of group to return",
+					"required": true,
+					"type": "string"
+				}],
+				"responses": {
+					"200": {
+						"description": "如果分组不存在，返回HTTP 404状态码，消息体可以为空。如果通道存在，则按照下面的JSON格式返回操作的结果.",
+						"example": {
+							"face_result": 0,
+							"pvc_result": 1,
+							"stat": {
+								"frame_count": 0,
+								"uuid": [
+									"chanid_1234",
+									"chanid_3456"
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		"/draw_attr/": {
+			"get": {
+				"tags": [
+					"DrawAttr"
+				],
+				"summary": "",
+				"description": "查询编码叠加属性",
+				"operationId": "get_draw_attr",
+				"consumes": [],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "查询编码叠加属性",
+						"example": {
+							"corner": {
+								"width": 4,
+								"length": 24,
+								"BVal": 0,
+								"GVal": 147,
+								"RVal": 255,
+								"Alpha": 0.0
+							},
+							"rect": {
+								"line": {
+									"width": 1,
+									"BVal": 0,
+									"RVal": 255,
+									"GVal": 147,
+									"Alpha": 0.0
+								},
+								"fill": {
+									"BVal": 0,
+									"RVal": 255,
+									"GVal": 147,
+									"Alpha": 0.88
+								}
+							},
+							"attr": {
+								"line": {
+									"width": 1,
+									"BVal": 0,
+									"RVal": 0,
+									"GVal": 0,
+									"Alpha": 0.0
+								},
+								"rect": {
+									"width": 150,
+									"height": 28
+								},
+								"offset": {
+									"x": 4,
+									"y": 4
+								},
+								"fill": {
+									"BVal": 0,
+									"RVal": 0,
+									"GVal": 0,
+									"Alpha": 0.4
+								}
+							},
+							"text": {
+								"size": 24,
+								"BVal": 255,
+								"RVal": 255,
+								"GVal": 255,
+								"Alpha": 0.4,
+								"offset": {
+									"x": 30,
+									"y": 2
+								}
+							},
+							"flag": {
+								"type": 2,
+								"size": 7,
+								"BVal": 0,
+								"RVal": 255,
+								"GVal": 147,
+								"Alpha": 0.0,
+								"offset": {
+									"x": 14,
+									"y": 14
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"DrawAttr"
+				],
+				"summary": "",
+				"description": "修改编码叠加属性",
+				"operationId": "put_draw_attr",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [{
+					"in": "body",
+					"name": "body",
+					"description": "修改编码叠加属性",
+					"required": true,
+					"example": {
+						"type": 0,
+						"DrawAttr": {
+							"corner": {
+								"width": 4,
+								"length": 24,
+								"BVal": 0,
+								"GVal": 147,
+								"RVal": 255,
+								"Alpha": 0.0
+							},
+							"rect": {
+								"line": {
+									"width": 1,
+									"BVal": 0,
+									"RVal": 255,
+									"GVal": 147,
+									"Alpha": 0.0
+								},
+								"fill": {
+									"BVal": 0,
+									"RVal": 255,
+									"GVal": 147,
+									"Alpha": 0.88
+								}
+							},
+							"attr": {
+								"line": {
+									"width": 1,
+									"BVal": 0,
+									"RVal": 0,
+									"GVal": 0,
+									"Alpha": 0.0
+								},
+								"rect": {
+									"width": 150,
+									"height": 28
+								},
+								"offset": {
+									"x": 4,
+									"y": 4
+								},
+								"fill": {
+									"BVal": 0,
+									"RVal": 0,
+									"GVal": 0,
+									"Alpha": 0.4
+								}
+							},
+							"text": {
+								"size": 24,
+								"BVal": 255,
+								"RVal": 255,
+								"GVal": 255,
+								"Alpha": 0.4,
+								"offset": {
+									"x": 30,
+									"y": 2
+								}
+							},
+							"flag": {
+								"type": 2,
+								"size": 7,
+								"BVal": 0,
+								"RVal": 255,
+								"GVal": 147,
+								"Alpha": 0.0,
+								"offset": {
+									"x": 14,
+									"y": 14
+								}
+							}
+						}
+					}
+				}],
+				"responses": {
+					"200": {
+						"description": "修改编码叠加属性",
+						"example": {
+							"ret": 0,
+							"errmsg": "修改成功！"
+						}
+					}
+				}
+			}
+		}
+	}
+}

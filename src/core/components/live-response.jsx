@@ -71,7 +71,7 @@ export default class LiveResponse extends React.Component {
 
     return (
       <div>
-        { curlRequest && <Curl request={ curlRequest }/> }
+        {/* { curlRequest && <Curl request={ curlRequest }/> } */}
         { url && <div>
             <h4>Request URL</h4>
             <div className="request-url">
@@ -79,8 +79,30 @@ export default class LiveResponse extends React.Component {
             </div>
           </div>
         }
-        <h4>Server response</h4>
-        <table className="responses-table live-responses-table">
+        <h4>Server response - { status }</h4>
+
+        {
+          isError ? <span>
+                      {`${response.get("name")}: ${response.get("message")}`}
+                    </span>
+                  : null
+        }
+        {
+          body ? <ResponseBody content={ body }
+                                contentType={ contentType }
+                                url={ url }
+                                headers={ headers }
+                                getComponent={ getComponent }/>
+                : null
+        }
+        {
+          hasHeaders ? <Headers headers={ returnObject }/> : null
+        }
+        {
+          displayRequestDuration && duration ? <Duration duration={ duration } /> : null
+        }
+
+        {/* <table className="responses-table live-responses-table">
           <thead>
           <tr className="responses-header">
             <td className="col col_header response-col_status">Code</td>
@@ -122,7 +144,7 @@ export default class LiveResponse extends React.Component {
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
       </div>
     )
   }

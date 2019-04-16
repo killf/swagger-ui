@@ -121,7 +121,7 @@ export default class ParamBody extends PureComponent {
             : (value && <HighlightCode className="body-param__example"
                                value={ value }/>)
         }
-        <div className="body-param-options">
+        {/* <div className="body-param-options">
           {
             !isExecute ? null
                        : <div className="body-param-edit">
@@ -134,7 +134,7 @@ export default class ParamBody extends PureComponent {
             <span>Parameter content type</span>
             <ContentType value={ consumesValue } contentTypes={ consumes } onChange={onChangeConsumes} className="body-param-content-type" />
           </label>
-        </div>
+        </div> */}
 
       </div>
     )

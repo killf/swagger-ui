@@ -82,13 +82,13 @@ export default class Responses extends React.Component {
       <div className="responses-wrapper">
         <div className="opblock-section-header">
           <h4>Responses</h4>
-            { specSelectors.isOAS3() ? null : <label>
+            {/* { specSelectors.isOAS3() ? null : <label>
               <span>Response content type</span>
               <ContentType value={producesValue}
                          onChange={this.onChangeProducesWrapper}
                          contentTypes={produces}
                          className="execute-content-type"/>
-                     </label> }
+                     </label> } */}
         </div>
         <div className="responses-inner">
           {
@@ -101,12 +101,12 @@ export default class Responses extends React.Component {
                                                 path={ this.props.path }
                                                 method={ this.props.method }
                                                 displayRequestDuration={ displayRequestDuration } />
-                                  <h4>Responses</h4>
+                                  {/* <h4>Responses</h4> */}
                                 </div>
 
           }
 
-          <table className="responses-table">
+          {/* <table className="responses-table">
             <thead>
               <tr className="responses-header">
                 <td className="col col_header response-col_status">Code</td>
@@ -137,7 +137,7 @@ export default class Responses extends React.Component {
                 }).toArray()
               }
             </tbody>
-          </table>
+          </table> */}
         </div>
       </div>
     )

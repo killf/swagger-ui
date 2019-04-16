@@ -74,6 +74,7 @@ export default class Operation extends PureComponent {
       tryItOutEnabled,
       executeInProgress
     } = operationProps.toJS()
+    tryItOutEnabled = true;
 
     let {
       description,
@@ -119,7 +120,7 @@ export default class Operation extends PureComponent {
                 <img height={"32px"} width={"32px"} src={require("core/../img/rolling-load.svg")} className="opblock-loading-animation" />
               }
               { deprecated && <h4 className="opblock-title_normal"> Warning: Deprecated</h4>}
-              { description &&
+              {/* { description &&
                 <div className="opblock-description-wrapper">
                   <div className="opblock-description">
                     <Markdown source={ description } />
@@ -137,96 +138,103 @@ export default class Operation extends PureComponent {
                     <Link target="_blank" className="opblock-external-docs__link" href={sanitizeUrl(externalDocs.url)}>{externalDocs.url}</Link>
                   </div>
                 </div> : null
-              }
+              } */}
 
-              { !operation || !operation.size ? null :
-                <Parameters
-                  parameters={parameters}
-                  specPath={specPath.push("parameters")}
-                  operation={operation}
-                  onChangeKey={onChangeKey}
-                  onTryoutClick = { onTryoutClick }
-                  onCancelClick = { onCancelClick }
-                  tryItOutEnabled = { tryItOutEnabled }
-                  allowTryItOut={allowTryItOut}
+               <div className="flex">
+                  <div className={response?(parameters.size?"w50":"w0"):"w100"}>
+                  { !operation || !operation.size ? null :
+                    <Parameters
+                      parameters={parameters}
+                      specPath={specPath.push("parameters")}
+                      operation={operation}
+                      onChangeKey={onChangeKey}
+                      onTryoutClick = { onTryoutClick }
+                      onCancelClick = { onCancelClick }
+                      tryItOutEnabled = { tryItOutEnabled }
+                      allowTryItOut={allowTryItOut}
 
-                  fn={fn}
-                  getComponent={ getComponent }
-                  specActions={ specActions }
-                  specSelectors={ specSelectors }
-                  pathMethod={ [path, method] }
-                  getConfigs={ getConfigs }
-                />
-              }
+                      fn={fn}
+                      getComponent={ getComponent }
+                      specActions={ specActions }
+                      specSelectors={ specSelectors }
+                      pathMethod={ [path, method] }
+                      getConfigs={ getConfigs }
+                    />
+                  }
 
-              { !tryItOutEnabled ? null :
-                <OperationServers
-                  getComponent={getComponent}
-                  path={path}
-                  method={method}
-                  operationServers={operation.get("servers")}
-                  pathServers={specSelectors.paths().getIn([path, "servers"])}
-                  getSelectedServer={oas3Selectors.selectedServer}
-                  setSelectedServer={oas3Actions.setSelectedServer}
-                  setServerVariableValue={oas3Actions.setServerVariableValue}
-                  getServerVariable={oas3Selectors.serverVariableValue}
-                  getEffectiveServerValue={oas3Selectors.serverEffectiveValue}
-                />
-              }
+                  { !tryItOutEnabled ? null :
+                    <OperationServers
+                      getComponent={getComponent}
+                      path={path}
+                      method={method}
+                      operationServers={operation.get("servers")}
+                      pathServers={specSelectors.paths().getIn([path, "servers"])}
+                      getSelectedServer={oas3Selectors.selectedServer}
+                      setSelectedServer={oas3Actions.setSelectedServer}
+                      setServerVariableValue={oas3Actions.setServerVariableValue}
+                      getServerVariable={oas3Selectors.serverVariableValue}
+                      getEffectiveServerValue={oas3Selectors.serverEffectiveValue}
+                    />
+                  }
 
-              {!tryItOutEnabled || !allowTryItOut ? null : schemes && schemes.size ? <div className="opblock-schemes">
-                    <Schemes schemes={ schemes }
-                             path={ path }
-                             method={ method }
-                             specActions={ specActions }
-                             currentScheme={ operationScheme } />
-                  </div> : null
-              }
+                  {!tryItOutEnabled || !allowTryItOut ? null : schemes && schemes.size ? <div className="opblock-schemes">
+                        <Schemes schemes={ schemes }
+                                path={ path }
+                                method={ method }
+                                specActions={ specActions }
+                                currentScheme={ operationScheme } />
+                      </div> : null
+                  }
+                </div>
+                               
+                <div className={response?(parameters.size?"w50":"w100"):"w0"}>
+                    {executeInProgress ? <div className="loading-container"><div className="loading"></div></div> : null}
 
-            <div className={(!tryItOutEnabled || !response || !allowTryItOut) ? "execute-wrapper" : "btn-group"}>
-              { !tryItOutEnabled || !allowTryItOut ? null :
+                    { !responses ? null :
+                        <Responses
+                          responses={ responses }
+                          request={ request }
+                          tryItOutResponse={ response }
+                          getComponent={ getComponent }
+                          getConfigs={ getConfigs }
+                          specSelectors={ specSelectors }
+                          oas3Actions={oas3Actions}
+                          specActions={ specActions }
+                          produces={specSelectors.producesOptionsFor([path, method]) }
+                          producesValue={ specSelectors.currentProducesFor([path, method]) }
+                          specPath={specPath.push("responses")}
+                          path={ path }
+                          method={ method }
+                          displayRequestDuration={ displayRequestDuration }
+                          fn={fn} />
+                    }
 
-                  <Execute
-                    operation={ operation }
-                    specActions={ specActions }
-                    specSelectors={ specSelectors }
-                    path={ path }
-                    method={ method }
-                    onExecute={ onExecute } />
-              }
+                    { !showExtensions || !extensions.size ? null :
+                      <OperationExt extensions={ extensions } getComponent={ getComponent } />
+                    }
+                </div>
+              </div>
 
-              { (!tryItOutEnabled || !response || !allowTryItOut) ? null :
-                  <Clear
-                    specActions={ specActions }
-                    path={ path }
-                    method={ method }/>
-              }
-            </div>
+              <div className={(!tryItOutEnabled || !response || !allowTryItOut) ? "execute-wrapper" : "btn-group"}>
+                { !tryItOutEnabled || !allowTryItOut ? null :
 
-            {executeInProgress ? <div className="loading-container"><div className="loading"></div></div> : null}
+                    <Execute
+                      operation={ operation }
+                      specActions={ specActions }
+                      specSelectors={ specSelectors }
+                      path={ path }
+                      method={ method }
+                      onExecute={ onExecute } />
+                }
 
-              { !responses ? null :
-                  <Responses
-                    responses={ responses }
-                    request={ request }
-                    tryItOutResponse={ response }
-                    getComponent={ getComponent }
-                    getConfigs={ getConfigs }
-                    specSelectors={ specSelectors }
-                    oas3Actions={oas3Actions}
-                    specActions={ specActions }
-                    produces={specSelectors.producesOptionsFor([path, method]) }
-                    producesValue={ specSelectors.currentProducesFor([path, method]) }
-                    specPath={specPath.push("responses")}
-                    path={ path }
-                    method={ method }
-                    displayRequestDuration={ displayRequestDuration }
-                    fn={fn} />
-              }
+                { (!tryItOutEnabled || !response || !allowTryItOut) ? null :
+                    <Clear
+                      specActions={ specActions }
+                      path={ path }
+                      method={ method }/>
+                }
+              </div>
 
-              { !showExtensions || !extensions.size ? null :
-                <OperationExt extensions={ extensions } getComponent={ getComponent } />
-              }
             </div>
           </Collapse>
         </div>
